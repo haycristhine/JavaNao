@@ -2,9 +2,9 @@
 <section class="section has-text-centered">
   <h1 class="title is-1"> Headers </h1>
   <div class="container">
-    {% for n, h in headers.iteritems() %}
+    {% for header_name, header_value in headers.items() %}
       <p>
-        <strong>{{ n }} </strong>: {{ h }}
+        <strong>{{ header_name }} </strong>: {{ header_value }}
       </p>
       <br />
     {% endfor %}
