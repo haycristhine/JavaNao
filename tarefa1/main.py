@@ -10,10 +10,15 @@ def alomundo():
     """questao 1."""
     if request.method == 'POST':
         name = request.form['name']
-        print(name)
         return render_template('alomundo/show_name.html', name=name)
     else:
         return render_template('alomundo/index.html')
+
+
+@app.route('/tarefa1/mostraheaders')
+def headers():
+    headers = request.headers
+    return render_template('headers.html', headers=headers)
 
 
 def main():
