@@ -14,14 +14,12 @@ def alomundo():
     if request.method == 'POST':
         name = request.form['name']
         return render_template('alomundo/show_name.html', name=name)
-    else:
-        return render_template('alomundo/index.html')
+    return render_template('alomundo/index.html')
 
 
 @app.route('/tarefa1/mostraheaders')
 def headers():
-    headers = request.headers
-    return render_template('headers.html', headers=headers)
+    return render_template('headers.html', headers=request.headers)
 
 
 @app.route('/')
@@ -46,8 +44,7 @@ def login():
     if request.method == 'GET':
         if get_session_username():
             return redirect(url_for('index'))
-        else:
-            return render_template('login.html')
+        return render_template('login.html')
 
     if request.method == 'POST':
         request_username = request.form['username']
@@ -59,7 +56,8 @@ def login():
 
         else:
             if users[request_username]['password'] != request_password:
-                return render_template('error_message.html', message="Senha inválida!")
+                return render_template(
+                    'error_message.html', message="Senha inválida!")
 
         session['username'] = request_username
         session.modified = True
@@ -88,7 +86,8 @@ def somatorio():
         except KeyError:
             session['sum_counter'] = 1
 
-        kwargs['browser_counter'] = users[user][request.headers.get('User-Agent')]
+        kwargs['browser_counter'] = users[user][request.headers.get(
+            'User-Agent')]
         kwargs['session_counter'] = session['sum_counter']
 
     app.sum_counter += 1
@@ -101,13 +100,22 @@ def somatorio():
         if start > end:
             raise ValueError
     except KeyError:
-        return render_template('error_message.html', message='São necessários os parâmetros "inicio" e "fim"')
+        return render_template(
+            'error_message.html',
+            message='São necessários os parâmetros "inicio" e "fim"')
     except ValueError:
-        return render_template('error_message.html', message='Valores inválidos para início e fim!')
+        return render_template(
+            'error_message.html',
+            message='Valores inválidos para início e fim!')
 
-    sum_result = sum(range(start, end+1))
-    return render_template('somatorio.html', start=start, end=end, sum_result=sum_result,
-                           app_counter=app.sum_counter, **kwargs)
+    sum_result = sum(range(start, end + 1))
+    return render_template(
+        'somatorio.html',
+        start=start,
+        end=end,
+        sum_result=sum_result,
+        app_counter=app.sum_counter,
+        **kwargs)
 
 
 def main():
