@@ -1,0 +1,25 @@
+{% extends "base.html" %} {% block content %}
+<section class="section has-text-centered">
+  <h1 class="title is-1"> Somatório </h1>
+  <div class="container">
+    O somatório de {{ start }} a {{ end }} é {{ sum_result }}.
+      <br />
+  </div>
+    {% if session_counter %}
+  <div class="container">
+    Você usou o serviço {{ session_counter }} vezes nessa sessão.
+      <br />
+  </div>
+    {% endif %}
+{% if browser_counter %}
+    <div class="container">
+    Você usou o serviço {{ browser_counter }} vezes nesse browser.
+      <br />
+  </div>
+{% endif %}
+  <div class="container">
+   Esse serviço foi usado {{ app_counter }} vezes desde que o servidor foi iniciado.
+      <br />
+  </div>
+</section>
+{% endblock content %}
