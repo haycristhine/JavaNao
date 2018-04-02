@@ -1,0 +1,13 @@
+{% extends "base.html" %} {% block content %}
+<section class="section has-text-centered">
+  <div class="container">
+    <h1 class="title is-1">Lembretes de {{ user }}</h1>
+    <ul style="list-style-type: disc;">
+    {% for note in notes %}
+        <li class="title is-3">{{ note }}</li>
+    {% endfor %}
+    </ul>
+
+  </div>
+</section>
+{% endblock content %}

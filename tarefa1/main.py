@@ -28,6 +28,10 @@ def index():
         user = session['username']
     except KeyError:
         user = None
+
+    if not session.get('notes'):
+        session['notes'] = {}
+        session.modified = True
     return render_template('index.html', user=user)
 
 
@@ -116,6 +120,54 @@ def somatorio():
         sum_result=sum_result,
         app_counter=app.sum_counter,
         **kwargs)
+
+
+@app.route('/tarefa1/guardalembrete', methods=['GET', 'POST'])
+def guardalembrete():
+    if request.method == 'GET':
+        if get_session_username():
+            return render_template('add_lembrete.html')
+        return render_template('login.html')
+
+    if request.method == 'POST':
+        user = get_session_username()
+        if user:
+            if not session.get('notes').get(user):
+                session['notes'][user] = []
+
+            session['notes'][user].append(request.form['note'])
+            session.modified = True
+            return redirect(url_for('mostralembrete', user=user))
+        else:
+            return render_template(
+                'error_message.html',
+                message="Esta ação requer um usuario logado")
+
+
+@app.route('/tarefa1/mostralembrete', methods=['GET'])
+def mostralembrete():
+    if request.method == 'GET':
+        try:
+            user = request.args.get('user')
+            if not user:
+                raise KeyError
+
+            if not users.get(user):
+                raise ValueError
+
+            return render_template(
+                'mostra_lembretes.html',
+                notes=session.get('notes').get(user) or [],
+                user=user)
+
+        except KeyError:
+            return render_template(
+                'error_message.html',
+                message='É preciso informar o username')
+        except ValueError:
+            return render_template(
+                'error_message.html',
+                message='Usuário inválido')
 
 
 def main():
